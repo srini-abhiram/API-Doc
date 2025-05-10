@@ -28,7 +28,7 @@ class _LoginPageState extends State<LoginPage> {
   Future<void> checkLoginStatus(BuildContext context) async {
     String? sessionToken = await secureStorage.read(key: 'session_token');
 
-    print('sessiontoken : $sessionToken' );
+    print('sessiontoken : $sessionToken');
     if (sessionToken != null) {
       // Set the session token for future requests
       final user = ParseUser(null, null, null)..sessionToken = sessionToken;
@@ -39,23 +39,26 @@ class _LoginPageState extends State<LoginPage> {
       if (currentUser != null) {
         // Navigate to the home screen if session is valid
         Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (_) => const HomePage()),
-      );
+          context,
+          MaterialPageRoute(builder: (_) => const HomePage()),
+        );
       } else {
         // If the session token is invalid, clear it and ask the user to log in
         await secureStorage.delete(key: 'session_token');
-        Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (_) => const LoginPage()),
-      );
+        //   Navigator.pushReplacement(
+        //   context,
+        //   MaterialPageRoute(builder: (_) => const LoginPage()),
+        // );
       }
     } else {
       // If no session token is found, navigate to the login screen
-      Navigator.pushReplacement(
+      // Navigator.pushReplacement(
+      //   context,
+      //   MaterialPageRoute(builder: (_) => const LoginPage()),
+      // );
+      ScaffoldMessenger.of(
         context,
-        MaterialPageRoute(builder: (_) => const LoginPage()),
-      );
+      ).showSnackBar(SnackBar(content: Text("Please login again.")));
     }
   }
 
@@ -183,7 +186,11 @@ class _LoginPageState extends State<LoginPage> {
                               borderRadius: BorderRadius.circular(8),
                             ),
                           ),
-                          onPressed: login,
+                          onPressed: () {
+                            if (_formKey.currentState!.validate()) {
+                              login();
+                            }
+                          },
                           child: const Text(
                             'Log in',
                             style: TextStyle(
