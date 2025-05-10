@@ -11,6 +11,8 @@ dependencies:
     sdk: flutter
   parse_server_sdk_flutter: ^6.0.0
   http: ^0.13.6
+  connectivity_plus: ^3.0.6
+  flutter_secure_storage: ^6.0.0
 
 dev_dependencies:
   flutter_test:
@@ -19,3 +21,7 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+
+dependency_overrides:
+  connectivity_plus:
+    path: local_packages/connectivity_plus

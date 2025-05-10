@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk_flutter.dart';
 import 'signup.dart';
 import 'home.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -15,6 +16,49 @@ class _LoginPageState extends State<LoginPage> {
   final passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
+  final FlutterSecureStorage secureStorage = FlutterSecureStorage();
+
+  @override
+  void initState() {
+    super.initState();
+    // Check login status when the page is initialized
+    checkLoginStatus(context);
+  }
+
+  Future<void> checkLoginStatus(BuildContext context) async {
+    String? sessionToken = await secureStorage.read(key: 'session_token');
+
+    print('sessiontoken : $sessionToken' );
+    if (sessionToken != null) {
+      // Set the session token for future requests
+      final user = ParseUser(null, null, null)..sessionToken = sessionToken;
+
+      // Set the session token using ParseUser.currentUser
+      final currentUser = await ParseUser.currentUser() as ParseUser?;
+
+      if (currentUser != null) {
+        // Navigate to the home screen if session is valid
+        Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => const HomePage()),
+      );
+      } else {
+        // If the session token is invalid, clear it and ask the user to log in
+        await secureStorage.delete(key: 'session_token');
+        Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => const LoginPage()),
+      );
+      }
+    } else {
+      // If no session token is found, navigate to the login screen
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => const LoginPage()),
+      );
+    }
+  }
+
   Future<void> login() async {
     final username = usernameController.text.trim();
     final password = passwordController.text.trim();
@@ -23,6 +67,8 @@ class _LoginPageState extends State<LoginPage> {
     final response = await user.login();
 
     if (response.success) {
+      String sessionToken = user.sessionToken!; // Save session token
+      await secureStorage.write(key: 'session_token', value: sessionToken);
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (_) => const HomePage()),
@@ -81,7 +127,7 @@ class _LoginPageState extends State<LoginPage> {
                   style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.w900,
-                    color: const Color.fromRGBO(57, 70, 87, 1),
+                    color: Color.fromRGBO(57, 70, 87, 1),
                   ),
                 ),
                 const SizedBox(height: 30),
