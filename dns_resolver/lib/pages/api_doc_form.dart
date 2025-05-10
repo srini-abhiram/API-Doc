@@ -13,7 +13,7 @@ class ApiDoc {
     required this.baseUrl,
   });
 
-  // Convert ApiDoc to Parse Object
+  /// Convert ApiDoc to Parse Object
   ParseObject toParseObject(ParseUser user) {
     final parseObject =
         ParseObject('ApiDoc')

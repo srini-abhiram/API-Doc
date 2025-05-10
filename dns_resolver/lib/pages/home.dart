@@ -18,32 +18,34 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-    validateSession();
+    // validateSession();
+    fetchApiDocs();
   });
   }
 
-  Future<void> validateSession() async {
-  final currentUser = await ParseUser.currentUser() as ParseUser?;
+  ///Validate and maintain session for a valid, authenticated user
+  // Future<void> validateSession() async {
+  // final currentUser = await ParseUser.currentUser() as ParseUser?;
 
-  if (currentUser == null || currentUser.sessionToken == null) {
-    // No user or session token - redirect to login
-    Navigator.pushReplacementNamed(context, '/login');
-    return;
-  }
+  // if (currentUser == null || currentUser.sessionToken == null) {
+  //   // No user or session token - redirect to login
+  //   Navigator.pushReplacementNamed(context, '/login');
+  //   return;
+  // }
 
-  final ParseResponse? sessionResponse =
-      await ParseUser.getCurrentUserFromServer(currentUser.sessionToken!);
+  // final ParseResponse? sessionResponse =
+  //     await ParseUser.getCurrentUserFromServer(currentUser.sessionToken!);
 
-  if (sessionResponse == null || sessionResponse.success != true) {
-    // Session expired or invalid
-    await currentUser.logout();
-    Navigator.pushReplacementNamed(context, '/login');
-    return;
-  }
+  // if (sessionResponse == null || sessionResponse.success != true) {
+  //   // Session expired or invalid
+  //   await currentUser.logout();
+  //   Navigator.pushReplacementNamed(context, '/login');
+  //   return;
+  // }
 
   // Session is valid - proceed to fetch data
-  fetchApiDocs();
-}
+  
+// }
 
 
   Future<void> fetchApiDocs() async {

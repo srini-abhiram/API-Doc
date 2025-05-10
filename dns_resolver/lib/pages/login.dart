@@ -25,6 +25,7 @@ class _LoginPageState extends State<LoginPage> {
     checkLoginStatus(context);
   }
 
+  ///Validate and maintain session for a valid, authenticated user from secure storage
   Future<void> checkLoginStatus(BuildContext context) async {
     String? sessionToken = await secureStorage.read(key: 'session_token');
 
@@ -62,6 +63,7 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
+  ///autherise user by using parse api requests and store session token
   Future<void> login() async {
     final username = usernameController.text.trim();
     final password = passwordController.text.trim();
@@ -83,6 +85,7 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
+  ///Navigate to sign up page
   void goToSignUp() {
     Navigator.push(
       context,

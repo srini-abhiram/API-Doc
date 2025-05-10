@@ -21,6 +21,10 @@ class _EndpointListPageState extends State<EndpointListPage> {
     fetchEndpoints();
   }
 
+  ///
+  /// Fetch all endpoints of selected recipe
+  /// Returns: List of endpoints
+  ///
   Future<void> fetchEndpoints() async {
     setState(() => isLoading = true);
 
@@ -45,6 +49,7 @@ class _EndpointListPageState extends State<EndpointListPage> {
     }
   }
 
+///Shows a dialog to add or edit endpoints with inputs fields: path, method, headers, body
   void showAddEndpointDialog({ParseObject? endpointToEdit}) {
     final _formKey = GlobalKey<FormState>();
     final _pathController = TextEditingController();
@@ -190,6 +195,7 @@ class _EndpointListPageState extends State<EndpointListPage> {
     );
   }
 
+  ///Helps parse json and determine validity
   dynamic parseJson(String input) {
     return input.trim().isEmpty ? {} : jsonDecode(input);
   }
