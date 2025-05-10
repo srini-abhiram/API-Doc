@@ -1,5 +1,5 @@
 Youtube Demo: https://youtu.be/yLZTnyvoSPI
 
 Presentation:
-![Slide 1](slides/slide1.png)
-![Slide 2](slides/slide2.png)
+![Slide 1](Slide1.jpg)
+![Slide 2](Slide2.jpg)
